@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Markup;
+
 
 string mensagemDeBoasVindas = "Boas Vindas ao Screen Sound";
 
 
-Dictionary<string, List<int>> bandasRegistradas = new Dictionary<string, List<int>>();
-bandasRegistradas.Add("Link Park", new List<int> { 10, 8, 6 });
-bandasRegistradas.Add("The Beatles", new List<int>());
+var bandasRegistradas = new Dictionary<string, List<int>> 
+{
+    {"Link Park", new List<int> { 10, 8, 6 } },
+    {"The Beatles", new List<int>()}
+
+};
 void ExibirLogo()
 {
     Console.WriteLine(@"
@@ -49,11 +52,13 @@ void ExibirMenuComOpcoes()
         case 3: AvaliarUmaBanda();
             Console.WriteLine($"Você escolheu a opção {opcaoEscolhida}");
             break;
-        case 4:
+        case 4: MediadaAvaliacao();
             Console.WriteLine($"Você escolheu a opção {opcaoEscolhida}");
             break;
         case 0:
+            Console.Clear();
             Console.WriteLine("Fui :/");
+            Environment.Exit(0);
             break;
         default: Console.WriteLine("Opção Inválida");
             break;
@@ -72,8 +77,20 @@ void RegistrarBandas()
     bandasRegistradas.Add(nomeDaBanda, new List<int>());
     Console.WriteLine($"A banda {nomeDaBanda} foi registrada com sucesso.");
     Thread.Sleep( 2000 );
+    Console.Write("\nPressione 1 para continuar registrando ou 2 para voltar ao menu principal: ");
+    var opcao = Convert.ToInt32(Console.ReadLine());
+    switch (opcao)
+    {
+        case 1: RegistrarBandas();
+            break;
+        case 2: ExibirMenuComOpcoes();
+            break;
+        default:
+            Console.WriteLine("Opção Inválida");
+            break;
+    }
     Console.Clear();
-    ExibirMenuComOpcoes();
+    
 }
 
 void ExibirBandas()
@@ -110,11 +127,8 @@ void AvaliarUmaBanda()
         var nota = Convert.ToInt32(Console.ReadLine()!);
         bandasRegistradas[nomeDaBanda].Add(nota);
         Console.WriteLine($"\nA nota {nota} foi registrada com sucesso para a banda {nomeDaBanda}");
-        for (int i = 0; i <= 2; i++)
-        {
-            Console.Write(".");
-            Thread.Sleep(1500);
-        }
+        Console.WriteLine("\nDigite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
         Console.Clear();
         ExibirMenuComOpcoes();
     }
@@ -126,10 +140,42 @@ void AvaliarUmaBanda()
         Console.Clear();
         ExibirMenuComOpcoes();
     }
+}
 
+
+void MediadaAvaliacao()
+{
+    Console.Clear();
+    ExibirTituloDaOpcao("Média da Banda");
+    Console.Write("Digite o nome da banda que deseja exibir a média: ");
+    var nomeDaBanda = Console.ReadLine()!;
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        List<int> notasDaBanda= bandasRegistradas[nomeDaBanda];
+        Console.WriteLine($"A média de avaliações da banda {nomeDaBanda} é: {notasDaBanda.Average()}");
+        Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
+        ExibirMenuComOpcoes();
+    }
+    else
+    {
+        Console.WriteLine($"Não há avaliações para a banda {nomeDaBanda} ");
+        Console.WriteLine("\nDigite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
+        Console.Clear();
+        ExibirMenuComOpcoes();
+    }
+    
+
+
+    
+    
 }
 
 ExibirMenuComOpcoes();
+
+
+    
 
 
 
