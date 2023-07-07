@@ -173,9 +173,3 @@ void MediadaAvaliacao()
 }
 
 ExibirMenuComOpcoes();
-
-
-    
-
-
-
